@@ -1,4 +1,4 @@
-#!usr/bin/env python3
+#!/usr/bin/env python3
 """Test Suite for utils.py"""
 from typing import Mapping, Sequence, Any
 
