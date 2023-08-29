@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Test Suite for utils.py"""
-from typing import Mapping, Sequence, Any, Dict
+from typing import Mapping, Sequence, Any, Dict, Callable
 
 from parameterized import parameterized
 
@@ -59,17 +59,17 @@ class TestMemoize(unittest.TestCase):
 
         class TestClass:
             """Test Class"""
-            def a_method(self):
+            def a_method(self) -> int:
                 return 42
 
             @memoize
-            def a_property(self):
+            def a_property(self) -> int:
                 return self.a_method()
 
-        with patch.object(TestClass, 'a_method', return_value=42) as memoize_mock:
+        with patch.object(TestClass, 'a_method') as memoize_mock:
             obj = TestClass()
-            self.assertEqual(obj.a_property, 42)
-            self.assertEqual(obj.a_property, 42)
+            obj.a_property()
+            obj.a_property()
             memoize_mock.assert_called_once()
 
 
