@@ -44,12 +44,11 @@ class TestGetJson(unittest.TestCase):
     @patch('utils.requests.get')
     def test_get_json(self, url: str, payload: Dict, mock_get) -> None:
         """TestCase for get_json method()"""
-
-        mock_response = mock_get.return_value
-        mock_response.json.return_value = payload
+        mock_get.return_value.json.return_value = payload
         # mock_get.return_value.json.return_value = payload
+        result = get_json(url)
         mock_get.assert_called_once_with(url)
-        self.assertEqual(get_json(url), payload)
+        self.assertEqual(result, payload)
 
 
 if __name__ == "__main__":
