@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Test Suite for utils.py"""
-from typing import Mapping, Sequence, Any
+from typing import Mapping, Sequence, Any, Dict
 
 from parameterized import parameterized
 
@@ -41,14 +41,15 @@ class TestGetJson(unittest.TestCase):
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
-    def test_get_json(self, url, payload):
+    @patch('utils.requests.get')
+    def test_get_json(self, url: str, payload: Dict, mock_get) -> None:
         """TestCase for get_json method()"""
-        with patch('utils.requests.get') as mock_get:
-            # mock_response = Mock()
-            # mock_response.json.return_value = payload
-            mock_get.return_value.json.return_value = payload
-            mock_get.assert_called_once_with(url)
-            self.assertEqual(get_json(url), payload)
+
+        mock_response = mock_get.return_value
+        mock_response.json.return_value = payload
+        # mock_get.return_value.json.return_value = payload
+        mock_get.assert_called_once_with(url)
+        self.assertEqual(get_json(url), payload)
 
 
 if __name__ == "__main__":
